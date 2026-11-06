@@ -18,6 +18,16 @@ router = APIRouter(
     "",
     response_model=OrderResponse,
     status_code=201,
+    responses={
+        404: {
+            "description": "One or more products do not exist.",
+        },
+        409: {
+            "description": (
+                "Idempotency key conflict or insufficient stock."
+            ),
+        },
+    },
 )
 def create_order_endpoint(
     order_data: OrderCreate,
@@ -44,6 +54,11 @@ def create_order_endpoint(
 @router.get(
     "/{order_id}",
     response_model=OrderResponse,
+    responses={
+        404: {
+            "description": "Order not found.",
+        },
+    },
 )
 def get_order(
     order_id: int,
